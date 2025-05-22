@@ -1,4 +1,4 @@
-const getCookRecipy = async () => {
+const getCookRecipe = async () => {
 	try {
 		const result = await fetch("https://dummyjson.com/recipes");
 		const data = await result.json();
@@ -16,3 +16,36 @@ const getCookRecipy = async () => {
 		throw `error: when fetching data's ${error}`;
 	}
 };
+
+const createAndAppendElement = (tagName, propertyName, value, parent) => {
+	const element = document.createElement(tagName);
+	if (propertyName && value !== undefined) {
+		element[propertyName] = value;
+	}
+	parent.appendChild(element);
+	return element;
+};
+
+const displayRecipes = async () => {
+	const cookRecipe = await getCookRecipe();
+	const mainContent = document.querySelector("main");
+	const section = document.createElement("section");
+
+	cookRecipe.forEach((item) => {
+		const article = document.createElement("article");
+		createAndAppendElement("h2", "textContent", item.name, article);
+		createAndAppendElement("img", "src", item.image, article);
+
+		const ul = document.createElement("ul");
+		createAndAppendElement("li", "textContent", item.difficulty, ul);
+		createAndAppendElement("li", "textContent", item.cookTimeMinutes, ul);
+		item.tags.map((elem) => {
+			createAndAppendElement("li", "textContent", elem, ul);
+		});
+		createAndAppendElement("li", "textContent", item.difficulty, ul);
+		article.appendChild(ul);
+		section.appendChild(article);
+	});
+	mainContent.appendChild(section);
+};
+displayRecipes();
