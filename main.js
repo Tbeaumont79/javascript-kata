@@ -1,10 +1,18 @@
-const cookRecipy = async () => {
+const getCookRecipy = async () => {
 	try {
 		const result = await fetch("https://dummyjson.com/recipes");
 		const data = await result.json();
-		console.log(data);
+		const datasFiltered = data.recipes.map(
+			({ name, cookTimeMinutes, difficulty, tags, image }) => ({
+				name,
+				cookTimeMinutes,
+				difficulty,
+				tags,
+				image,
+			})
+		);
+		return datasFiltered;
 	} catch (error) {
-		throw error;
+		throw `error: when fetching data's ${error}`;
 	}
 };
-cookRecipy();
