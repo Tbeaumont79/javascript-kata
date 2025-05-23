@@ -1,0 +1,31 @@
+[data-theme="synthwave"] {
+	color-scheme: "dark";
+	--color-base-100: oklch(27% 0.046 192.524);
+	--color-base-200: oklch(38% 0.063 188.416);
+	--color-base-300: oklch(43% 0.078 188.216);
+	--color-base-content: oklch(95% 0.051 180.801);
+	--color-primary: oklch(58% 0.233 277.117);
+	--color-primary-content: oklch(96% 0.018 272.314);
+	--color-secondary: oklch(0% 0 0);
+	--color-secondary-content: oklch(100% 0 0);
+	--color-accent: oklch(55% 0.046 257.417);
+	--color-accent-content: oklch(98% 0.003 247.858);
+	--color-neutral: oklch(43% 0.078 188.216);
+	--color-neutral-content: oklch(98% 0.014 180.72);
+	--color-info: oklch(60% 0.126 221.723);
+	--color-info-content: oklch(98% 0.019 200.873);
+	--color-success: oklch(60% 0.118 184.704);
+	--color-success-content: oklch(98% 0.014 180.72);
+	--color-warning: oklch(66% 0.179 58.318);
+	--color-warning-content: oklch(98% 0.022 95.277);
+	--color-error: oklch(59% 0.249 0.584);
+	--color-error-content: oklch(97% 0.014 343.198);
+	--radius-selector: 2rem;
+	--radius-field: 0.5rem;
+	--radius-box: 0.25rem;
+	--size-selector: 0.25rem;
+	--size-field: 0.25rem;
+	--border: 1px;
+	--depth: 1;
+	--noise: 1;
+}
