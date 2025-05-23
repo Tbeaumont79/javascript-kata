@@ -13,7 +13,37 @@
 		<link rel="stylesheet" href="styles/style.css" />
 	</head>
 	<body class="w-full flex flex-col justify-center items-center">
-		<main class="w-96"></main>
+		<header class="w-full p-5">
+			<div class="navbar bg-base-100 shadow-sm">
+				<div class="flex-1">
+					<a class="btn btn-ghost text-2xl">BlogAi</a>
+				</div>
+				<label class="input">
+					<svg
+						class="h-[1em] opacity-50"
+						xmlns="http://www.w3.org/2000/svg"
+						viewBox="0 0 24 24"
+					>
+						<g
+							stroke-linejoin="round"
+							stroke-linecap="round"
+							stroke-width="2.5"
+							fill="none"
+							stroke="currentColor"
+						>
+							<circle cx="11" cy="11" r="8"></circle>
+							<path d="m21 21-4.3-4.3"></path>
+						</g>
+					</svg>
+					<input type="search" class="grow" placeholder="Search" />
+					<kbd class="kbd kbd-sm">⌘</kbd>
+					<kbd class="kbd kbd-sm">K</kbd>
+				</label>
+			</div>
+		</header>
+		<main class="w-96">
+			<h1 class="text-center text-3xl pt-10 pb-10">These is our Posts :</h1>
+		</main>
 		<script src="script/main.js"></script>
 	</body>
 </html>
