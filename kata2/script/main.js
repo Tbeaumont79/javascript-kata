@@ -1,5 +1,17 @@
 const API_URL = "https://dummyjson.com/posts";
+const getInput = document.getElementById("search-id");
+getInput.addEventListener("input", async (e) => {
+	const currentValue = e.target.value;
+	const postDatas = await getPosts();
+	const filteredArray = arrayFilter(postDatas, currentValue);
+	e.target.value !== "" ? displayCards(filteredArray) : displayCards(postDatas);
+});
 
+function arrayFilter(array, seachTerm) {
+	return array.filter(
+		(post) => post.title.includes(seachTerm) || post.body.includes(seachTerm)
+	);
+}
 async function getPosts() {
 	try {
 		const result = await fetch("https://dummyjson.com/posts");
@@ -19,9 +31,8 @@ async function getPosts() {
 	}
 }
 
-async function displayCards() {
+async function displayCards(posts) {
 	const mainElement = document.getElementsByTagName("main");
-	const posts = await getPosts();
 	await posts.map((items) => {
 		console.log(items);
 		postCard(mainElement, items.title, items.body, items.reactions, items.tags);
@@ -30,6 +41,7 @@ async function displayCards() {
 
 async function postCard(mainElement, title, body, reactions, tags) {
 	const section = document.createElement("section");
+	section.innerHTML = "";
 	mainElement[0].appendChild(section);
 	section.innerHTML = `
 	<div class="card bg-base-100 w-96 shadow-sm">
@@ -48,5 +60,3 @@ async function postCard(mainElement, title, body, reactions, tags) {
 		</div>
 	</div>`;
 }
-
-displayCards();
