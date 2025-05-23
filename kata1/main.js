@@ -17,7 +17,7 @@ const getCookRecipe = async () => {
 	}
 };
 
-const createAndAppendElement = (tagName, propertyName, value, parent) => {
+const createAndAppendChildElement = (tagName, propertyName, value, parent) => {
 	const element = document.createElement(tagName);
 	if (propertyName && value !== undefined) {
 		element[propertyName] = value;
@@ -33,16 +33,16 @@ const displayRecipes = async () => {
 
 	cookRecipe.forEach((item) => {
 		const article = document.createElement("article");
-		createAndAppendElement("h2", "textContent", item.name, article);
-		createAndAppendElement("img", "src", item.image, article);
+		createAndAppendChildElement("h2", "textContent", item.name, article);
+		createAndAppendChildElement("img", "src", item.image, article);
 
 		const ul = document.createElement("ul");
-		createAndAppendElement("li", "textContent", item.difficulty, ul);
-		createAndAppendElement("li", "textContent", item.cookTimeMinutes, ul);
+		createAndAppendChildElement("li", "textContent", item.difficulty, ul);
+		createAndAppendChildElement("li", "textContent", item.cookTimeMinutes, ul);
 		item.tags.map((elem) => {
-			createAndAppendElement("li", "textContent", elem, ul);
+			createAndAppendChildElement("li", "textContent", elem, ul);
 		});
-		createAndAppendElement("li", "textContent", item.difficulty, ul);
+		createAndAppendChildElement("li", "textContent", item.difficulty, ul);
 		article.appendChild(ul);
 		section.appendChild(article);
 	});
