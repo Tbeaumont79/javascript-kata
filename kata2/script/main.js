@@ -61,6 +61,17 @@ getInput.addEventListener("input", async (e) => {
 	displayCards(mainElement, filteredArray);
 });
 
+document.addEventListener("keydown", function (e) {
+	const isMac = navigator.platform.toUpperCase().indexOf("MAC") >= 0;
+	const isCmdK =
+		(isMac && e.metaKey && e.key === "k") ||
+		(!isMac && e.ctrlKey && e.key === "k");
+
+	if (isCmdK) {
+		e.preventDefault(); // Empêche le comportement par défaut du navigateur
+		getInput.focus();
+	}
+});
 async function init() {
 	const posts = await getPosts();
 	displayCards(mainElement, posts);
