@@ -68,7 +68,7 @@ document.addEventListener("keydown", function (e) {
 		(!isMac && e.ctrlKey && e.key === "k");
 
 	if (isCmdK) {
-		e.preventDefault(); // Empêche le comportement par défaut du navigateur
+		e.preventDefault();
 		getInput.focus();
 	}
 });
