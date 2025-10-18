@@ -5,8 +5,8 @@ const PORT = process.env.PORT || 3000;
 
 app.use(express.json());
 
-app.get("/", (req: Request, res: Response) => {
-	res.json({ message: "Hello World with TypeScript!" });
+app.get("/", (_req: Request, res: Response) => {
+	res.json({ message: "hello" });
 });
 
 app.listen(PORT, () => {
