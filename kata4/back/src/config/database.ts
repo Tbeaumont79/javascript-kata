@@ -1,39 +1,32 @@
-// db.js
-import { MongoClient, Db } from "mongodb";
+import mongoose from "mongoose";
 import dotenv from "dotenv";
 
 dotenv.config();
 
 const uri = process.env.MONGODB_URI;
-const dbName = process.env.MONGODB_DB_NAME;
 
 if (!uri) {
 	throw new Error("MONGODB_URI is not defined in environment variables");
 }
 
-// Create a single shared client instance for the whole app
-const client = new MongoClient(uri, {
-	// Strong defaults for production readiness
-	maxPoolSize: 10, // limit concurrent connections from this app
-	minPoolSize: 0,
-	serverSelectionTimeoutMS: 5000, // fail fast if server not reachable
-	socketTimeoutMS: 20000, // time out long-running operations
-});
-
-let cachedDb: Db | null = null;
-
 /**
- * Connects to MongoDB and returns the db handle.
+ * Connects to MongoDB using Mongoose.
  * Ensures only one connection is established and reused.
  */
 export async function getDb() {
-	if (cachedDb) return cachedDb;
+	if (mongoose.connection.readyState === 1) {
+		console.log("MongoDB already connected");
+		return mongoose.connection;
+	}
 
 	try {
-		await client.connect(); // establishes the pool
-		const db = client.db(dbName);
-		cachedDb = db;
-		return db;
+		await mongoose.connect(uri as string, {
+			maxPoolSize: 10,
+			serverSelectionTimeoutMS: 5000,
+			socketTimeoutMS: 20000,
+		});
+		console.log("MongoDB connected successfully");
+		return mongoose.connection;
 	} catch (err) {
 		console.error("MongoDB connection error:", err);
 		throw err;
@@ -45,9 +38,9 @@ export async function getDb() {
  */
 export async function closeDb() {
 	try {
-		await client.close();
-		cachedDb = null;
+		await mongoose.connection.close();
+		console.log("MongoDB connection closed");
 	} catch (err) {
-		console.error("Error closing MongoDB client:", err);
+		console.error("Error closing MongoDB connection:", err);
 	}
 }

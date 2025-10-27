@@ -1,7 +1,8 @@
 import express, { Request, Response } from "express";
 import dotenv from "dotenv";
 import { getDb, closeDb } from "./config/database";
-import createUser from "./controllers/userController";
+import { getUser, createUser } from "./controllers/userController";
+import { login } from "./controllers/authController";
 dotenv.config();
 
 const app = express();
@@ -10,9 +11,10 @@ const PORT = process.env.PORT || 3000;
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+app.get("/getUser", async (__, res) => await getUser(res));
+
 app.get("/", async (_req: Request, res: Response) => {
 	try {
-		await getDb();
 		res.json({ message: "hello", dbConnected: true });
 	} catch (error) {
 		console.error("Database connection error:", error);
@@ -20,9 +22,16 @@ app.get("/", async (_req: Request, res: Response) => {
 	}
 });
 
-app.post("/register", createUser);
+app.post("/register", async (req, res) => {
+	await createUser(req, res);
+});
+
+app.post("/login", async (req, res) => {
+	await login(req, res);
+});
 
 const server = app.listen(PORT, async () => {
+	await getDb();
 	console.log(`Server running on port ${PORT}`);
 });
 

@@ -9,6 +9,7 @@ const UserSchema = new mongoose.Schema(
 		},
 		username: { type: String },
 		email: { type: String },
+		password: { type: String, select: false },
 		roles: {
 			type: String,
 			default: "member",
@@ -17,6 +18,6 @@ const UserSchema = new mongoose.Schema(
 	{ timestamps: true }
 );
 
-const userModel = mongoose.model("User", UserSchema);
+const User = mongoose.model("User", UserSchema);
 
-export default userModel;
+export default User;
