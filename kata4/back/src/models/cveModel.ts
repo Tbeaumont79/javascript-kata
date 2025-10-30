@@ -120,8 +120,8 @@ type VulnStatus =
 
 type Severity = "NONE" | "LOW" | "MEDIUM" | "HIGH" | "CRITICAL";
 
-export interface ICVE extends Document {
-	id: string;
+export interface ICVE {
+	cveId: string; // Renamed from 'id' to avoid conflict with Mongoose Document.id
 	sourceIdentifier?: string;
 	published?: Date;
 	lastModified?: Date;
@@ -222,7 +222,6 @@ const CpeMatchSchema = new Schema<ICpeMatch>(
 		criteria: {
 			type: String,
 			required: true,
-			index: true,
 		},
 		matchCriteriaId: String,
 		versionEndExcluding: String,
@@ -284,7 +283,7 @@ const SyncMetadataSchema = new Schema<ISyncMetadata>(
 // Schéma principal CVE
 const CVESchema = new Schema<ICVEDocument, ICVEModel>(
 	{
-		id: {
+		cveId: {
 			type: String,
 			required: true,
 			unique: true,
@@ -357,7 +356,7 @@ CVESchema.index({ sourceIdentifier: 1, published: -1 });
 
 // Index de texte pour la recherche
 CVESchema.index({
-	id: "text",
+	cveId: "text",
 	"descriptions.value": "text",
 	"references.url": "text",
 });
@@ -421,7 +420,7 @@ CVESchema.pre<ICVEDocument>("save", function (next) {
 CVESchema.statics.bulkUpsert = async function (cves: ICVE[]): Promise<any> {
 	const bulkOps = cves.map((cve) => ({
 		updateOne: {
-			filter: { id: cve.id },
+			filter: { cveId: cve.cveId },
 			update: { $set: cve },
 			upsert: true,
 		},

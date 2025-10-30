@@ -3,6 +3,8 @@ import dotenv from "dotenv";
 import { getDb, closeDb } from "./config/database";
 import { getUser, createUser } from "./controllers/userController";
 import { login } from "./controllers/authController";
+import { cveUpdateChecker } from "./controllers/cveController";
+
 dotenv.config();
 
 const app = express();
@@ -21,7 +23,9 @@ app.get("/", async (_req: Request, res: Response) => {
 		res.status(500).json({ message: "Database connection failed", error });
 	}
 });
-
+app.get("/updateCve", async (_, res) => {
+	await cveUpdateChecker(res);
+});
 app.post("/register", async (req, res) => {
 	await createUser(req, res);
 });
