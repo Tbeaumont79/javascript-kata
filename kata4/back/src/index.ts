@@ -4,6 +4,27 @@ import { getDb, closeDb } from "./config/database";
 import { getUser, createUser } from "./controllers/userController";
 import { login } from "./controllers/authController";
 import { cveUpdateChecker } from "./controllers/cveController";
+import rateLimit from 'express-rate-limit';
+
+
+const limiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 100,
+  message: {
+    error: 'Too many requests from this IP address',
+    retryAfter: '15 minutes',
+    documentation: 'https://api.example.com/docs/rate-limits'
+  },
+  standardHeaders: true,
+  legacyHeaders: false,
+  handler: (req, res) => {
+    res.status(429).json({
+      error: 'Rate limit exceeded',
+      message: 'Too many requests from this IP, please try again later',
+	  retryAfter: res.get('Retry-After') || 900 
+    });
+  }
+});
 
 dotenv.config();
 
@@ -12,6 +33,7 @@ const PORT = process.env.PORT || 3000;
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(limiter);
 
 app.get("/getUser", async (__, res) => await getUser(res));
 
@@ -23,6 +45,7 @@ app.get("/", async (_req: Request, res: Response) => {
 		res.status(500).json({ message: "Database connection failed", error });
 	}
 });
+
 app.get("/updateCve", async (_, res) => {
 	await cveUpdateChecker(res);
 });
