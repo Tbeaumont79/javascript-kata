@@ -4,26 +4,25 @@ import { getDb, closeDb } from "./config/database";
 import { getUser, createUser } from "./controllers/userController";
 import { login } from "./controllers/authController";
 import { cveUpdateChecker } from "./controllers/cveController";
-import rateLimit from 'express-rate-limit';
-
+import rateLimit from "express-rate-limit";
 
 const limiter = rateLimit({
-  windowMs: 15 * 60 * 1000,
-  max: 100,
-  message: {
-    error: 'Too many requests from this IP address',
-    retryAfter: '15 minutes',
-    documentation: 'https://api.example.com/docs/rate-limits'
-  },
-  standardHeaders: true,
-  legacyHeaders: false,
-  handler: (req, res) => {
-    res.status(429).json({
-      error: 'Rate limit exceeded',
-      message: 'Too many requests from this IP, please try again later',
-	  retryAfter: res.get('Retry-After') || 900 
-    });
-  }
+	windowMs: 15 * 60 * 1000,
+	max: 100,
+	message: {
+		error: "Too many requests from this IP address",
+		retryAfter: "15 minutes",
+		documentation: "https://api.example.com/docs/rate-limits",
+	},
+	standardHeaders: true,
+	legacyHeaders: false,
+	handler: (_, res) => {
+		res.status(429).json({
+			error: "Rate limit exceeded",
+			message: "Too many requests from this IP, please try again later",
+			retryAfter: res.get("Retry-After") || 900, // 15 min
+		});
+	},
 });
 
 dotenv.config();
